@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
@@ -28,8 +29,8 @@ import jline.console.completer.Completer;
 import jline.console.completer.FileNameCompleter;
 import jline.console.completer.StringsCompleter;
 
-public class Cli extends Configured implements Tool
-{
+public class Cli extends Configured implements Tool {
+  
   public static void usage() {
     System.out.println("Usage: java " + Cli.class.getName()
         + " [none/simple/files/dictionary [trigger mask]]");
@@ -52,6 +53,13 @@ public class Cli extends Configured implements Tool
     
   public int run(String[] args) throws Exception {
     Configuration conf = this.getConf();
+    // The default empty configuration will give a file:/// filesystem which is local
+    Configuration localConf = new Configuration();
+    
+ //   localfs  = FileSystem.get(localConf);
+ //   setLocalwd(System.getProperty("user.dir"));
+ //   remotefs = FileSystem.get(conf);
+ //   setRemotewd(remotefs.getHomeDirectory().toString());
 
     try {
       Character mask = null;
@@ -134,4 +142,6 @@ public class Cli extends Configured implements Tool
   public static void main(String[] args) throws Exception {
     ToolRunner.run(new Cli(), args);
   }
+
+ 
 }
