@@ -10,7 +10,7 @@ public abstract class AbstractCommand {
   public String commandString;
   public HashMap<Character, String> switches = new HashMap<Character, String>();
   public ArrayList<String>          paths    = new ArrayList<String>();
-  private ExecutionEnvironment      environment;
+  protected ExecutionEnvironment      environment;
   
   public AbstractCommand(String cmd) {
     commandString = cmd;

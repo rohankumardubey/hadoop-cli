@@ -14,6 +14,7 @@ public interface ExecuterInterface {
   public FileSystem localfs();
   public FileSystem remotefs();
   public int execute(AbstractCommand cmd);
-  
+  public void stdout(String buf);
+  public void stderr(String buf);
   
 }

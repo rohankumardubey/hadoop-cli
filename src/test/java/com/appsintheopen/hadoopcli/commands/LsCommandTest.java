@@ -2,11 +2,19 @@ package com.appsintheopen.hadoopcli.commands;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
+import org.junit.Before;
 import org.junit.Test;
 
-import com.appsintheopen.hadoopcli.ExecutionEnvironment;
-
 public class LsCommandTest {
+  
+  TestExecutionEnvironment env;
+  
+  @Before
+  public void setup() throws IOException {
+    env = new TestExecutionEnvironment();
+  }
   
   @Test
   public void testSwitchesExtracted() {
@@ -26,10 +34,27 @@ public class LsCommandTest {
   }
   
   @Test
-  public void testSimpleExecuteReturnsZero() {
-    ExecutionEnvironment env = new ExecutionEnvironment();
-    LsCommand cmd = new LsCommand("-l -t /somepath");
+  public void testListingCurrentDirectory() throws IOException {
+    LsCommand cmd = new LsCommand("-l -t");
     assertEquals(cmd.execute(env), 0);
+  }
+  
+  @Test
+  public void testListingFileCurrentDirectory() throws IOException {
+    LsCommand cmd = new LsCommand("-l -t .classpath");
+    assertEquals(cmd.execute(env), 0);
+  }
+  
+  @Test
+  public void testListingDirectoryThatDoesNotExist() throws IOException {
+    LsCommand cmd = new LsCommand("-l -t /dirnotexist");
+    assertEquals(cmd.execute(env), 1);
+  }
+
+  @Test
+  public void testListingRelativeDirectoryThatDoesNotExist() throws IOException {
+    LsCommand cmd = new LsCommand("-l -t dirnotexist");
+    assertEquals(cmd.execute(env), 1);
   }
   
 }

@@ -53,5 +53,16 @@ public class ExecutionEnvironment implements ExecuterInterface
   public int execute(AbstractCommand cmd) {
     return cmd.execute(this);
   }
+  
+  @Override
+  public void stdout(String buf) {
+    System.out.print(buf+"\n");
+  }
 
+  @Override
+  public void stderr(String buf) {
+    System.err.print(buf+"\n");
+  }
+
+  
 }
