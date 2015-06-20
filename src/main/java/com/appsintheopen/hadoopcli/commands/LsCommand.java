@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
 public class LsCommand extends AbstractCommand {
@@ -19,19 +20,19 @@ public class LsCommand extends AbstractCommand {
   protected int validate() {
     if (paths.size() == 0) {
       // If not path was passed, then list the cwd
-      listDirectory = environment.localwd();
+      listDirectory = wd();
     } else if (!paths.get(0).startsWith("/")) {
       // relative path - prepend the cwd
-      listDirectory = environment.localwd()+"/"+paths.get(0);
+      listDirectory = wd()+"/"+paths.get(0);
     } else {
       // absolute path is simple
       listDirectory = paths.get(0);
     }
     listPath = new Path(listDirectory);
     try {
-      if (!environment.localfs().exists(listPath)) {
+      if (!fs().exists(listPath)) {
         // The requested path doesn't exist, so abort
-        environment.stderr(listDirectory+" does not exist");
+        environment.stderr(listDirectory+": no such file or directory");
         return 1;
       }
     } catch(IOException e) {
@@ -46,7 +47,7 @@ public class LsCommand extends AbstractCommand {
   @Override
   protected int runCommand() {
     try {
-      FileStatus[] files = environment.localfs().listStatus(listPath);
+      FileStatus[] files = fs().listStatus(listPath);
       for (int i=0; i<files.length; i++) {
         environment.stdout(files[i].getPath().getName());
       }
@@ -59,5 +60,13 @@ public class LsCommand extends AbstractCommand {
     }
     return 0;
   }
+  
+  private FileSystem fs() {
+    return environment.localfs();
+  }
 
+  private String wd() {
+    return environment.localwd();
+  }
+  
 }

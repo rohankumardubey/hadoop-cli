@@ -25,7 +25,9 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 import com.appsintheopen.hadoopcli.commands.AbstractCommand;
+import com.appsintheopen.hadoopcli.commands.CommandFactory;
 import com.appsintheopen.hadoopcli.commands.LsCommand;
+import com.appsintheopen.hadoopcli.commands.UnknownCommandException;
 
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
@@ -118,6 +120,7 @@ public class Cli extends Configured implements Tool {
       env.setOutputStream(out);
 
       while ((line = reader.readLine()) != null) {
+        String trimmed = line.trim();
         /*
         if (color){
           out.println("\u001B[33m======>\u001B[0m\"" + line + "\"");
@@ -133,14 +136,21 @@ public class Cli extends Configured implements Tool {
         if ((trigger != null) && (line.compareTo(trigger) == 0)) {
           line = reader.readLine("password> ", mask);
         }*/
-        if (line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit")) {
+        if (trimmed.equalsIgnoreCase("quit") || trimmed.equalsIgnoreCase("exit")) {
           break;
         }
-        if (line.equalsIgnoreCase("cls")) {
+        if (trimmed.equalsIgnoreCase("cls")) {
           reader.clearScreen();
-        } else {
-          AbstractCommand command = new LsCommand(line);
-          env.execute(command);
+        } else if (trimmed.isEmpty()) {
+          // Do nothing, the prompt will be reprinted automatically
+        }  else {
+          // This is where the command actually gets built and executed
+          try {
+            AbstractCommand command = new CommandFactory().getCommand(line);
+            env.execute(command);
+          } catch (UnknownCommandException e) {
+            out.println("unknown command: "+e.getMessage());
+          }
         }
         out.flush();
       }
