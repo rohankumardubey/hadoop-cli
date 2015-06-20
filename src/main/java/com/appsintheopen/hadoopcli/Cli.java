@@ -24,12 +24,17 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+import com.appsintheopen.hadoopcli.commands.AbstractCommand;
+import com.appsintheopen.hadoopcli.commands.LsCommand;
+
 import jline.console.ConsoleReader;
 import jline.console.completer.Completer;
 import jline.console.completer.FileNameCompleter;
 import jline.console.completer.StringsCompleter;
 
 public class Cli extends Configured implements Tool {
+  
+  public ExecutionEnvironment env;
   
   public static void usage() {
     System.out.println("Usage: java " + Cli.class.getName()
@@ -53,13 +58,14 @@ public class Cli extends Configured implements Tool {
     
   public int run(String[] args) throws Exception {
     Configuration conf = this.getConf();
-    // The default empty configuration will give a file:/// filesystem which is local
     Configuration localConf = new Configuration();
+    localConf.set("fs.defaultFS", "file:///");
     
- //   localfs  = FileSystem.get(localConf);
- //   setLocalwd(System.getProperty("user.dir"));
- //   remotefs = FileSystem.get(conf);
- //   setRemotewd(remotefs.getHomeDirectory().toString());
+    env = new ExecutionEnvironment();
+    env.setLocalfs(FileSystem.get(localConf));
+    env.setRemotefs(FileSystem.get(conf));
+    env.setLocalwd(System.getProperty("user.dir"));
+    env.setRemotewd(FileSystem.get(conf).getHomeDirectory().toString());
 
     try {
       Character mask = null;
@@ -106,30 +112,37 @@ public class Cli extends Configured implements Tool {
       for (Completer c : completors) {
         reader.addCompleter(c);
       }
-
+  
       String line;
       PrintWriter out = new PrintWriter(reader.getOutput());
+      env.setOutputStream(out);
 
       while ((line = reader.readLine()) != null) {
+        /*
         if (color){
           out.println("\u001B[33m======>\u001B[0m\"" + line + "\"");
           
         } else {
           out.println("======>\"" + line + "\"");
         }
-        out.flush();
+        */
         
+        /*
         // If we input the special word then we will mask
         // the next line.
         if ((trigger != null) && (line.compareTo(trigger) == 0)) {
           line = reader.readLine("password> ", mask);
-        }
+        }*/
         if (line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit")) {
           break;
         }
         if (line.equalsIgnoreCase("cls")) {
           reader.clearScreen();
+        } else {
+          AbstractCommand command = new LsCommand(line);
+          env.execute(command);
         }
+        out.flush();
       }
     }
     catch (Throwable t) {

@@ -1,6 +1,10 @@
 package com.appsintheopen.hadoopcli;
 
+import java.io.PrintWriter;
+import java.io.Writer;
+
 import org.apache.hadoop.fs.FileSystem;
+
 import com.appsintheopen.hadoopcli.commands.AbstractCommand;
 
 public class ExecutionEnvironment implements ExecuterInterface
@@ -10,6 +14,7 @@ public class ExecutionEnvironment implements ExecuterInterface
   private String remotewd;
   private FileSystem localfs;
   private FileSystem remotefs;
+  private PrintWriter output;
   
   @Override
   public String localwd() {
@@ -56,13 +61,16 @@ public class ExecutionEnvironment implements ExecuterInterface
   
   @Override
   public void stdout(String buf) {
-    System.out.print(buf+"\n");
+    output.println(buf);
   }
 
   @Override
   public void stderr(String buf) {
-    System.err.print(buf+"\n");
+    output.println(buf);
   }
-
+  
+  public void setOutputStream(PrintWriter out) {
+    output = out;
+  }
   
 }
