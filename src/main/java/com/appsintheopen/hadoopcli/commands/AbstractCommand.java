@@ -49,6 +49,8 @@ public abstract class AbstractCommand {
         continue;
       }
       if (isKeyword) {
+        // Consume the keyword (ie the command name) and throw away
+        // as it is not required.
         while(i < len && commandString.charAt(i) != ' ') {
           i++;
         }
@@ -76,29 +78,5 @@ public abstract class AbstractCommand {
       }
     }
   }
-    
- /*   
-    // This is a naive implementation - switches cannot have 
-    // further options like "-a foo -b bar"
-    String[] parts = commandString.split("\\s+");  
-    for (String p : parts) {
-      if (p.startsWith("-")) {
-        tokenizeSwitch(p);
-      } else {
-        // its a path
-        paths.add(p);
-      }
-    }
-  }
-  
-  // Splits a series of switches into their single character
-  // switches. Eg -ltr becomes 3 switches
-  private void tokenizeSwitch(String str) {
-    // Index from 1 to skip the leading dash
-    for (int i=1; i<str.length(); i++) {
-      switches.put(str.charAt(i), "");
-    }
-  }
-  */
 
 }
