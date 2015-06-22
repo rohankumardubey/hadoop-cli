@@ -21,12 +21,12 @@ public class LsCommand extends AbstractCommand {
     if (paths.size() == 0) {
       // If not path was passed, then list the cwd
       listDirectory = wd();
-    } else if (!paths.get(0).startsWith("/")) {
+    } else if (!pathNumber(0).startsWith("/")) {
       // relative path - prepend the cwd
-      listDirectory = wd()+"/"+paths.get(0);
+      listDirectory = wd()+"/"+pathNumber(0);
     } else {
       // absolute path is simple
-      listDirectory = paths.get(0);
+      listDirectory = pathNumber(0);
     }
     listPath = new Path(listDirectory);
     try {
