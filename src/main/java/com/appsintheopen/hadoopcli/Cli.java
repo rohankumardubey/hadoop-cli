@@ -89,7 +89,7 @@ public class Cli extends Configured implements Tool {
         }
         else if (args[0].equals("files")) {
           // completors.add(new FileNameCompleter());
-          completors.add(new PathCompleter());
+          completors.add(new PathCompleter(env));
         }
         else if (args[0].equals("hdfs")) {
           completors.add(new HdfsCompleter(conf));
