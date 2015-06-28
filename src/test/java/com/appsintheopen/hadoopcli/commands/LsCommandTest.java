@@ -29,26 +29,26 @@ public class LsCommandTest {
   @Test
   public void testPathsExtracted() {
     LsCommand cmd = new LsCommand("ls -l -t -abc /somepath other/path");
-    assertEquals(cmd.paths.get(0).path, "/somepath");
-    assertEquals(cmd.paths.get(0).startPosition, 14);
-    assertEquals(cmd.paths.get(0).endPosition, 22);
+    assertEquals(cmd.paths.get(0).value, "/somepath");
+    assertEquals(cmd.paths.get(0).startPos, 14);
+    assertEquals(cmd.paths.get(0).endPos, 22);
 
-    assertEquals(cmd.paths.get(1).path, "other/path");
-    assertEquals(cmd.paths.get(1).startPosition, 24);
-    assertEquals(cmd.paths.get(1).endPosition, 33);
+    assertEquals(cmd.paths.get(1).value, "other/path");
+    assertEquals(cmd.paths.get(1).startPos, 24);
+    assertEquals(cmd.paths.get(1).endPos, 33);
     
   }
   
   @Test
   public void testPathPositionsCorrectWithLeadingWhiteSpace() {
     LsCommand cmd = new LsCommand("  ls -l -t -abc /somepath other/path");
-    assertEquals(cmd.paths.get(0).path, "/somepath");
-    assertEquals(cmd.paths.get(0).startPosition, 16);
-    assertEquals(cmd.paths.get(0).endPosition, 24);
+    assertEquals(cmd.paths.get(0).value, "/somepath");
+    assertEquals(cmd.paths.get(0).startPos, 16);
+    assertEquals(cmd.paths.get(0).endPos, 24);
 
-    assertEquals(cmd.paths.get(1).path, "other/path");
-    assertEquals(cmd.paths.get(1).startPosition, 26);
-    assertEquals(cmd.paths.get(1).endPosition, 35);
+    assertEquals(cmd.paths.get(1).value, "other/path");
+    assertEquals(cmd.paths.get(1).startPos, 26);
+    assertEquals(cmd.paths.get(1).endPos, 35);
   }
     
   @Test
