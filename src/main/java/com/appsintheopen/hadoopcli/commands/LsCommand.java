@@ -7,6 +7,8 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+import com.appsintheopen.hadoopcli.ExecutionEnvironment;
+
 public class LsCommand extends AbstractCommand {
   
   protected String listDirectory;
@@ -59,6 +61,16 @@ public class LsCommand extends AbstractCommand {
       return 3;
     }
     return 0;
+  }
+  
+  @Override
+  public FileSystem getFileSystemForPathNumber(ExecutionEnvironment env, int num) {
+    return env.localfs();
+  }
+  
+  @Override
+  public String getWorkingDirectoryForPathNumber(ExecutionEnvironment env, int num) {
+    return env.localwd();
   }
   
   private FileSystem fs() {

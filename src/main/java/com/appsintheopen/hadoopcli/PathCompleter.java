@@ -17,14 +17,16 @@ import com.appsintheopen.hadoopcli.commands.UnknownCommandException;
 import jline.console.completer.Completer;
 
 public class PathCompleter implements Completer {
+
+  protected ExecutionEnvironment env;
   
   protected String originalPath;
   protected String completionPath;
   protected int    completionPathStartPosition;
   protected String decodedPath;
   protected int pathNumber;
-  protected ExecutionEnvironment env;
   protected FileSystem fs;
+  protected String cwd;
   
   public PathCompleter(ExecutionEnvironment e) {
     env = e;
@@ -53,9 +55,8 @@ public class PathCompleter implements Completer {
     }
     // Now we are pretty sure we have a valid completion scenario. Need to ask the command
     // which filesystem is valid for the given path number
-    
-    // TODO - get the FS from the command object.
-    fs = env.localfs();
+    fs = cmd.getFileSystemForPathNumber(env, pathNumber);
+    cwd = cmd.getWorkingDirectoryForPathNumber(env, pathNumber);
     
     FileStatus[] files;
     try {
@@ -181,7 +182,7 @@ public class PathCompleter implements Completer {
       // The original path, which is not absolutized, is needed to calculate
       // the cursor position for completions.
       originalPath   = completionPath;
-      completionPath = completionPath.isEmpty() ? env.localwd()+"/" : completionPath.startsWith("/") ? completionPath : env.localwd()+"/"+completionPath;
+      completionPath = completionPath.isEmpty() ? cwd+"/" : completionPath.startsWith("/") ? completionPath : cwd+"/"+completionPath;
       // DecodedPath will not have an . or .. sections. They are removed when a string becomes a path
       // This complicates checking if returned strings match the original path.
       decodedPath    = removeScheme(new Path(completionPath).toString());

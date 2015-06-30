@@ -3,6 +3,8 @@ package com.appsintheopen.hadoopcli.commands;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.hadoop.fs.FileSystem;
+
 import com.appsintheopen.hadoopcli.ExecutionEnvironment;
 
 public abstract class AbstractCommand {
@@ -31,6 +33,13 @@ public abstract class AbstractCommand {
   abstract protected int validate();
   // Implement the actual logic to run the command
   abstract protected int runCommand();
+  // Returns the filesystem for the given path number
+  // This is important for commands that operate across file systems,
+  // eg put <local_file> <remote_file>
+  abstract public FileSystem getFileSystemForPathNumber(ExecutionEnvironment env, int num);
+  // This returns the current working directory for the given PathNumber - This is important
+  // for commands that operation across file systems.
+  abstract public String getWorkingDirectoryForPathNumber(ExecutionEnvironment env, int num);
   
   protected String pathNumber(int i) {
     return paths.get(i).value;
