@@ -58,6 +58,11 @@ public class PathCompleter implements Completer {
     fs = cmd.getFileSystemForPathNumber(env, pathNumber);
     cwd = cmd.getWorkingDirectoryForPathNumber(env, pathNumber);
     
+    if (fs == null || cwd == null) {
+      // Its a command that doesn't work on paths, eg pwd
+      return cursor;
+    }
+    
     FileStatus[] files;
     try {
       files = getFiles();

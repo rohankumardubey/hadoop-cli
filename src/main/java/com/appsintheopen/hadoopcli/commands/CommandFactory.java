@@ -13,6 +13,8 @@ public class CommandFactory {
     
     switch(potential) {
       case "ls": return new LsCommand(cmd);
+      case "pwd": return new PwdCommand(cmd);
+      case "lpwd": return new LPwdCommand(cmd);
       default: throw new UnknownCommandException(potential);
     }
   }

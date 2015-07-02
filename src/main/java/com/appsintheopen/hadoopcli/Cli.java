@@ -67,7 +67,9 @@ public class Cli extends Configured implements Tool {
     env.setLocalfs(FileSystem.get(localConf));
     env.setRemotefs(FileSystem.get(conf));
     env.setLocalwd(System.getProperty("user.dir"));
-    env.setRemotewd(FileSystem.get(conf).getHomeDirectory().toString());
+    // The call to Path.getPathWith... removes the "hdfs://<clustername>"</path> part of the path, leaving
+    // just the absolute hdfs path
+    env.setRemotewd(Path.getPathWithoutSchemeAndAuthority(FileSystem.get(conf).getHomeDirectory()).toString());
 
     try {
       Character mask = null;
