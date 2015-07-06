@@ -9,12 +9,12 @@ import org.apache.hadoop.fs.Path;
 
 import com.appsintheopen.hadoopcli.ExecutionEnvironment;
 
-public class LsCommand extends AbstractCommand {
+public class LlsCommand extends AbstractCommand {
   
   protected String listDirectory;
   protected Path   listPath;
 
-  public LsCommand(String cmd) {
+  public LlsCommand(String cmd) {
     super(cmd);
   }
 

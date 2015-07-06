@@ -26,7 +26,7 @@ import org.apache.hadoop.util.ToolRunner;
 
 import com.appsintheopen.hadoopcli.commands.AbstractCommand;
 import com.appsintheopen.hadoopcli.commands.CommandFactory;
-import com.appsintheopen.hadoopcli.commands.LsCommand;
+import com.appsintheopen.hadoopcli.commands.LlsCommand;
 import com.appsintheopen.hadoopcli.commands.UnknownCommandException;
 
 import jline.console.ConsoleReader;
