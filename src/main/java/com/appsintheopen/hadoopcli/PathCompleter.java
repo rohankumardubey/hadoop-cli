@@ -132,8 +132,7 @@ public class PathCompleter implements Completer {
   }
     
   private String removeScheme(String path) {
-    // TODO - fix this to work with HDFS and local files
-    return path.replace("file:", "");
+    return Path.getPathWithoutSchemeAndAuthority(new Path(path)).toString();
   }
   
   
@@ -190,7 +189,7 @@ public class PathCompleter implements Completer {
       completionPath = completionPath.isEmpty() ? cwd+"/" : completionPath.startsWith("/") ? completionPath : cwd+"/"+completionPath;
       // DecodedPath will not have an . or .. sections. They are removed when a string becomes a path
       // This complicates checking if returned strings match the original path.
-      decodedPath    = removeScheme(new Path(completionPath).toString());
+      decodedPath    =  removeScheme(new Path(completionPath).toString());
       return true;
     } else {
       return false;
