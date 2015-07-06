@@ -73,11 +73,11 @@ public class LlsCommand extends AbstractCommand {
     return env.localwd();
   }
   
-  private FileSystem fs() {
+  protected FileSystem fs() {
     return environment.localfs();
   }
 
-  private String wd() {
+  protected String wd() {
     return environment.localwd();
   }
   

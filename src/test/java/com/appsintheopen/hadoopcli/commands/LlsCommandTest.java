@@ -18,7 +18,7 @@ public class LlsCommandTest {
   
   @Test
   public void testSwitchesExtracted() {
-    LlsCommand cmd = new LlsCommand("ls -l -t -abc /somepath other/path");
+    LlsCommand cmd = new LlsCommand("lls -l -t -abc /somepath other/path");
     assertTrue(cmd.switches.containsKey('l'));
     assertTrue(cmd.switches.containsKey('t'));
     assertTrue(cmd.switches.containsKey('a'));
@@ -28,50 +28,50 @@ public class LlsCommandTest {
 
   @Test
   public void testPathsExtracted() {
-    LlsCommand cmd = new LlsCommand("ls -l -t -abc /somepath other/path");
+    LlsCommand cmd = new LlsCommand("lls -l -t -abc /somepath other/path");
     assertEquals(cmd.paths.get(0).value, "/somepath");
-    assertEquals(cmd.paths.get(0).startPos, 14);
-    assertEquals(cmd.paths.get(0).endPos, 22);
+    assertEquals(cmd.paths.get(0).startPos, 15);
+    assertEquals(cmd.paths.get(0).endPos, 23);
 
     assertEquals(cmd.paths.get(1).value, "other/path");
-    assertEquals(cmd.paths.get(1).startPos, 24);
-    assertEquals(cmd.paths.get(1).endPos, 33);
+    assertEquals(cmd.paths.get(1).startPos, 25);
+    assertEquals(cmd.paths.get(1).endPos, 34);
     
   }
   
   @Test
   public void testPathPositionsCorrectWithLeadingWhiteSpace() {
-    LlsCommand cmd = new LlsCommand("  ls -l -t -abc /somepath other/path");
+    LlsCommand cmd = new LlsCommand("  lls -l -t -abc /somepath other/path");
     assertEquals(cmd.paths.get(0).value, "/somepath");
-    assertEquals(cmd.paths.get(0).startPos, 16);
-    assertEquals(cmd.paths.get(0).endPos, 24);
+    assertEquals(cmd.paths.get(0).startPos, 17);
+    assertEquals(cmd.paths.get(0).endPos, 25);
 
     assertEquals(cmd.paths.get(1).value, "other/path");
-    assertEquals(cmd.paths.get(1).startPos, 26);
-    assertEquals(cmd.paths.get(1).endPos, 35);
+    assertEquals(cmd.paths.get(1).startPos, 27);
+    assertEquals(cmd.paths.get(1).endPos, 36);
   }
     
   @Test
   public void testListingCurrentDirectory() throws IOException {
-    LlsCommand cmd = new LlsCommand("ls -l -t");
+    LlsCommand cmd = new LlsCommand("lls -l -t");
     assertEquals(cmd.execute(env), 0);
   }
   
   @Test
   public void testListingFileCurrentDirectory() throws IOException {
-    LlsCommand cmd = new LlsCommand("ls -l -t .classpath");
+    LlsCommand cmd = new LlsCommand("lls -l -t .classpath");
     assertEquals(cmd.execute(env), 0);
   }
   
   @Test
   public void testListingDirectoryThatDoesNotExist() throws IOException {
-    LlsCommand cmd = new LlsCommand("ls -l -t /dirnotexist");
+    LlsCommand cmd = new LlsCommand("lls -l -t /dirnotexist");
     assertEquals(cmd.execute(env), 1);
   }
 
   @Test
   public void testListingRelativeDirectoryThatDoesNotExist() throws IOException {
-    LlsCommand cmd = new LlsCommand("ls -l -t dirnotexist");
+    LlsCommand cmd = new LlsCommand("lls -l -t dirnotexist");
     assertEquals(cmd.execute(env), 1);
   }
   

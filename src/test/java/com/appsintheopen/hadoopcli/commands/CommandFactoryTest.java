@@ -11,19 +11,19 @@ public class CommandFactoryTest {
 
   @Test
   public void testLsCommandCanBeCreated() throws UnknownCommandException {
-    AbstractCommand cmd = new CommandFactory().getCommand("ls /foo/bar");
+    AbstractCommand cmd = new CommandFactory().getCommand("lls /foo/bar");
     assertEquals(LlsCommand.class, cmd.getClass());
   }
 
   @Test
   public void testLsCommandCanBeCreatedWithNoPath() throws UnknownCommandException {
-    AbstractCommand cmd = new CommandFactory().getCommand("ls");
+    AbstractCommand cmd = new CommandFactory().getCommand("lls");
     assertEquals(LlsCommand.class, cmd.getClass());
   }
   
   @Test
   public void testLsCommandCanBeCreatedWithLeadingWhitespace() throws UnknownCommandException {
-    AbstractCommand cmd = new CommandFactory().getCommand("   ls");
+    AbstractCommand cmd = new CommandFactory().getCommand("   lls");
     assertEquals(LlsCommand.class, cmd.getClass());
   }
 
