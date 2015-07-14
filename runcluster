@@ -1,0 +1,5 @@
+CLASSPATH=`hadoop classpath`
+CLASSPATH="hadoop-cli-1.0-jar-with-dependencies.jar:$CLASSPATH"
+export CLASSPATH
+
+java com.appsintheopen.hadoopcli.Cli files
